@@ -2067,7 +2067,12 @@ int gspca_dev_probe2(struct usb_interface *intf,
 	gspca_dev->vdev = gspca_template;
 	gspca_dev->vdev.v4l2_dev = &gspca_dev->v4l2_dev;
 	video_set_drvdata(&gspca_dev->vdev, gspca_dev);
-	set_bit(V4L2_FL_USE_FH_PRIO, &gspca_dev->vdev.flags);
+	//set_bit(V4L2_FL_USE_FH_PRIO, &gspca_dev->vdev.flags);
+#ifdef V4L2_FL_USE_FH_PRIO
+ 	set_bit(V4L2_FL_USE_FH_PRIO, &gspca_dev->vdev.flags);
+#else
+	set_bit(V4L2_FL_USES_V4L2_FH, &gspca_dev->vdev.flags);
+#endif
 	gspca_dev->module = module;
 	gspca_dev->present = 1;
 
@@ -2278,3 +2283,4 @@ module_exit(gspca_exit);
 module_param_named(debug, gspca_debug, int, 0644);
 MODULE_PARM_DESC(debug,
 		"1:probe 2:config 3:stream 4:frame 5:packet 6:usbi 7:usbo");
+
